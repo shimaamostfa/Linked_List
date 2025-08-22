@@ -1,0 +1,174 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef unsigned char u8;
+typedef unsigned int u32;
+typedef struct Node
+{
+    int data;
+    struct Node *next; // Pointer to the next node in the linked list
+}Node;
+
+Node* Head ; // Pointer to the head of the linked list
+Node* Current ; // Pointer to the current node in the linked list
+void insert_at_begin(Node* new_node);
+void insert_at_end(Node* new_node);
+int delete_Node(int data);
+void print_list(void);
+void sort_Nodes(void);
+void delete_duplicates_Node(void);
+
+struct Node* new_node_with_malloc(u32 data)
+{
+Node* new_node = (Node*)malloc(sizeof(Node)); // Allocate memory for the new node
+new_node->data = data;
+new_node->next = NULL;
+return new_node;
+
+}
+int isempty(void)
+{
+    return (Head == NULL);
+    
+}
+ 
+void insert_at_begin(Node* new_node)
+{
+    if(isempty())
+    {
+        new_node->next = NULL;
+        Head = new_node;
+        Current = new_node; // Update the current pointer to the new node
+       
+
+    }
+    else
+    {
+        new_node->next = Head; // Point the new node to the current head
+        Head = new_node; // Update the head to the new node
+    }
+}
+void insert_at_end(Node* new_node)
+{
+    if(isempty())
+    {
+        new_node->next = Current->next;
+        Current->next = new_node;
+        new_node = Current;
+        
+    }
+    else
+    {
+        new_node->next = NULL; // Point the new node to NULL
+        Current->next = new_node; // Point the current node's next to the new node
+        Current = new_node; // Update the current pointer to the new node
+
+    }
+}
+int delete_Node(int data)
+{
+    Node** temp = &Head; // Pointer to the pointer of the head node
+    while(*temp != NULL)
+    {
+        if((*temp)->data == data)
+        {
+            Node* to_delete = *temp; // Node to be deleted
+            *temp = (*temp)->next; // Bypass the node to be deleted
+            free(to_delete); // Free the memory of the deleted node
+            printf("Node with data %d deleted.\n", data);
+            return 1; // Return success
+        }
+        temp = &((*temp)->next); // Move to the next node
+    }
+    return 0; // Return failure
+}
+void print_list(void)
+{
+    Node* temp = Head;
+    u32 size =0;
+    while(temp !=NULL)
+    {
+        printf("%d -> ", temp->data);
+        temp = temp->next; // Move to the next node
+        size++;
+    }
+    printf("Null\n");
+    printf("Size of the linked list (Count of nodes): %d\n", size);
+}
+void sort_Nodes(void)
+{
+    Node* temp = Head;
+    while(temp != NULL && temp->next != NULL)
+    {
+        if(temp->data >= temp->next->data)
+        {
+            // Swap the data of the two nodes
+            int temp_data = temp->data;
+            temp->data = temp->next->data;
+            temp->next->data = temp_data;
+        }
+        
+        temp = temp->next; 
+    }
+    Node* temp_1 = Head;
+    printf("Sorted List");
+    while(temp_1 !=NULL)
+    {
+        printf(" %d -> ", temp_1->data);
+        temp_1 = temp_1->next; // Move to the next node
+       
+    }
+    printf("Null\n");
+
+}
+    
+void delete_duplicates_Node(void)
+{
+    Node** temp = &Head; // Pointer to the pointer of the head node
+    while(*temp != NULL && (*temp)->next != NULL)
+    {
+        if((*temp)->data == (*temp)->next->data)
+        {
+            Node* to_delete = *temp; // Node to be deleted
+            *temp = (*temp)->next; // Bypass the node to be deleted
+            free(to_delete); // Free the memory of the deleted node
+        }
+        temp = &((*temp)->next); // Move to the next node
+    }
+    Node* temp_1 = Head;
+    printf("Sorted list after deletion of duplicates:");
+    while(temp_1 !=NULL)
+    {
+        printf(" %d -> ", temp_1->data);
+        temp_1 = temp_1->next; // Move to the next node
+       
+    }
+    printf("Null\n");
+
+    
+}
+int main()
+{
+
+    // Create a new node with malloc
+     Node *node = new_node_with_malloc(10);
+     Node *node2 = new_node_with_malloc(20);
+     Node *node3 = new_node_with_malloc(25);
+     Node *node4 = new_node_with_malloc(25);
+     Node *node5 = new_node_with_malloc(30);    
+     Node *node6 = new_node_with_malloc(5);
+     Node *node7 = new_node_with_malloc(40);
+    // printf("Node data (calloc): %d\n", node2->data);
+    insert_at_begin(node);
+    insert_at_begin(node2);
+    insert_at_begin(node3);
+    insert_at_end(node4);
+    insert_at_end(node5);
+    insert_at_begin(node6);
+    insert_at_begin(node7);
+    print_list();
+    delete_Node(40); 
+    print_list();
+    sort_Nodes(); 
+    delete_duplicates_Node();  
+    return 0;
+}
