@@ -1,5 +1,5 @@
-### Dynamic Memory Allocation
-# Write a C program that:
+# Dynamic Memory Allocation
+## Write a C program that:
 1. Asks the user to enter the number of students.
 2. Dynamically allocates memory to store the grades of all students (use malloc).
 3. Allows the user to input the grades.
